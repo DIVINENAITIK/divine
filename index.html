@@ -59,6 +59,17 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
         h1 { font-size: clamp(2rem, 8vw, 3.8rem); font-family: 'Space Grotesk'; margin-bottom: 15px; background: linear-gradient(to bottom, #fff, #b0b0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
+        /* Prefix Styling */
+        .prefix-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(188, 19, 254, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            display: inline-block;
+            max-width: 90%;
+        }
+
         /* Grid Layouts */
         .section-padding { padding: 80px 8%; }
         .section-title { text-align: center; margin-bottom: 50px; }
@@ -121,13 +132,21 @@
         </div>
     </header>
 
-    <section class="section-padding">
+    <section class="section-padding" style="text-align: center;">
+        
+        <div class="prefix-container">
+            <p style="color: var(--text-main); font-size: 1rem;">
+                <i class="fas fa-terminal" style="color: var(--primary-glow); margin-right: 8px;"></i>
+                Default prefix is <b>&</b> or you can check by pinging bot
+            </p>
+        </div>
+
         <div class="section-title">
             <h2>Command Documentation</h2>
             <p>Master the power of Divine.</p>
         </div>
 
-        <div class="commands-grid">
+        <div class="commands-grid" style="text-align: left;">
             <div class="cmd-card">
                 <div class="cmd-header"><i class="fas fa-shield-alt"></i> Antinuke Module</div>
                 <div style="margin-bottom: 10px;">
@@ -257,6 +276,25 @@
                 <p style="font-size: 0.9rem; color: var(--text-muted);">Initialize a secure verification process to protect your server from bots.</p>
                 <div class="cmd-note">GUIDANCE: Run the command and follow the setup wizard to enable member verification.</div>
             </div>
+
+            <div class="cmd-card">
+                <div class="cmd-header"><i class="fas fa-list-ol"></i> Counting System</div>
+                <div style="margin-bottom: 10px;">
+                    <span class="cmd-name">&counting enable</span>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Enables a competitive counting minigame for your server members.</p>
+                <div class="cmd-note">NOTE: Must use <b>&counting channel</b> to specify the channel where the system should be active.</div>
+            </div>
+
+            <div class="cmd-card">
+                <div class="cmd-header"><i class="fas fa-chart-bar"></i> Tracking System</div>
+                <div style="margin-bottom: 10px;">
+                    <span class="cmd-name">&tracking enable</span>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Tracks server activity including member invites and message counts.</p>
+                <div class="cmd-note">TIP: Use <b>&tracking leaderboard</b> to see the top contributors in your server.</div>
+            </div>
+
         </div>
     </section>
 
