@@ -59,6 +59,30 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
         h1 { font-size: clamp(2rem, 8vw, 3.8rem); font-family: 'Space Grotesk'; margin-bottom: 15px; background: linear-gradient(to bottom, #fff, #b0b0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
+        /* Scroll Hint Styling */
+        .scroll-hint {
+            margin-top: 25px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.8;
+        }
+        .scroll-hint i {
+            color: var(--primary-glow);
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-6px);}
+            60% {transform: translateY(-3px);}
+        }
+
         /* Prefix Styling */
         .prefix-container {
             margin-bottom: 30px;
@@ -94,6 +118,7 @@
             .hero-btns .btn { width: 100%; justify-content: center; }
             .commands-grid { grid-template-columns: 1fr; }
             .section-padding { padding: 60px 5%; }
+            .scroll-hint { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -122,13 +147,20 @@
         <h1>Divine Security</h1>
         <p style="color: var(--text-muted); max-width: 600px; margin-bottom: 30px;">Premium Antinuke, Automod, and advanced Moderation protocols to safeguard your Discord community.</p>
         
-        <div class="hero-btns" style="display: flex; gap: 15px;">
-            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add to Discord
-            </a>
-            <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-support">
-                <i class="fab fa-discord"></i> Support Server
-            </a>
+        <div class="hero-btns" style="display: flex; flex-direction: column; align-items: center;">
+            <div style="display: flex; gap: 15px;">
+                <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add to Discord
+                </a>
+                <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-support">
+                    <i class="fab fa-discord"></i> Support Server
+                </a>
+            </div>
+            
+            <div class="scroll-hint">
+                <span>Scroll down to see commands</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </header>
 
@@ -308,4 +340,4 @@
     </footer>
 
 </body>
-</html>
+</html>ive
