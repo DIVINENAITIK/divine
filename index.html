@@ -3,341 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divine Bot | Professional Discord Security</title>
+    <title>Divine | Enterprise Security Infrastructure</title>
     
     <meta name="description" content="Divine Bot - Premium Antinuke, Automod, and Utility for Discord. Created by naitik05642.">
     <meta name="theme-color" content="#bc13fe">
     <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-glow: #bc13fe;   
-            --secondary-glow: #5a45cc; 
-            --accent-cyan: #00f3ff;
-            --bg-dark: #050508;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(188, 19, 254, 0.2);
+            --primary: #bc13fe;
+            --primary-dim: rgba(188, 19, 254, 0.1);
+            --primary-glow: rgba(188, 19, 254, 0.4);
+            --bg: #050507;
+            /* Made card background slightly more opaque for better contrast against the image */
+            --card-bg: rgba(10, 10, 12, 0.75); 
+            --border: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
-            --text-muted: #a0a0b8;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --text-muted: #9ca3af;
+            --accent-cyan: #22d3ee;
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg);
             color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Animated Background */
-        .bg-blobs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #0a0a15 0%, #050508 100%); }
-        .blob { position: absolute; width: 500px; height: 500px; background: var(--secondary-glow); filter: blur(150px); opacity: 0.12; border-radius: 50%; animation: move 20s infinite alternate; }
-        @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
-
-        /* Navigation */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; position: fixed; width: 100%; top: 0; z-index: 1000; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5,5,8,0.7); }
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; }
-        .nav-logo img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary-glow); }
-
-        /* Buttons */
-        .btn { padding: 12px 24px; border-radius: 10px; font-weight: 700; text-decoration: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: none; font-size: 0.9rem; }
-        .btn-primary { background: linear-gradient(135deg, var(--secondary-glow), var(--primary-glow)); color: white; box-shadow: 0 8px 15px rgba(188, 19, 254, 0.2); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(188, 19, 254, 0.4); }
-        .btn-support { background: #5865F2; color: white; } /* Discord Blue */
-        .btn-support:hover { background: #4752c4; transform: translateY(-2px); }
-        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.1); }
-
-        /* Hero */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px 20px 40px 20px; }
-        .hero-avatar { width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--primary-glow); margin-bottom: 25px; box-shadow: 0 0 40px rgba(188, 19, 254, 0.4); animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        h1 { font-size: clamp(2rem, 8vw, 3.8rem); font-family: 'Space Grotesk'; margin-bottom: 15px; background: linear-gradient(to bottom, #fff, #b0b0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* --- Background Implementation --- */
+        .bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            overflow: hidden;
+        }
         
-        /* Scroll Hint Styling */
-        .scroll-hint {
-            margin-top: 25px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.8;
-        }
-        .scroll-hint i {
-            color: var(--primary-glow);
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-6px);}
-            60% {transform: translateY(-3px);}
+        .bg-image {
+            width: 100%; height: 100%;
+            background-image: url('https://media.discordapp.net/attachments/1451136748385079529/1471872356338372880/image.png?ex=69908373&is=698f31f3&hm=4482325202110aee74af1bf3e23c5ae06705850d5e89e32b1a118a3e24e6831e&=&format=webp&quality=lossless&width=936&height=523');
+            background-size: cover;
+            background-position: center;
+            /* Subtle zoom animation to keep it alive */
+            animation: slowZoom 30s infinite alternate ease-in-out;
         }
 
-        /* Prefix Styling */
-        .prefix-container {
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(188, 19, 254, 0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            display: inline-block;
-            max-width: 90%;
+        /* Dark Overlay to ensure text readability */
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: rgba(5, 5, 8, 0.85); /* 85% opacity dark layer */
+            backdrop-filter: blur(5px); /* Slight blur for focus */
         }
 
-        /* Grid Layouts */
-        .section-padding { padding: 80px 8%; }
-        .section-title { text-align: center; margin-bottom: 50px; }
-        .section-title h2 { font-size: 2.2rem; font-family: 'Space Grotesk'; color: var(--primary-glow); }
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
 
-        .commands-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .cmd-card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 25px; border-radius: 18px; transition: var(--transition); }
-        .cmd-card:hover { border-color: var(--primary-glow); background: rgba(188, 19, 254, 0.04); transform: translateY(-5px); }
-        .cmd-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: var(--accent-cyan); font-weight: 800; }
-        .cmd-name { font-family: monospace; color: var(--primary-glow); background: rgba(188, 19, 254, 0.1); padding: 4px 10px; border-radius: 6px; font-size: 0.95rem; margin-right: 5px; display: inline-block; margin-bottom: 5px; }
-        .cmd-note { color: #ff4757; font-size: 0.8rem; font-weight: 700; margin-top: 10px; border-left: 3px solid #ff4757; padding-left: 8px; }
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* --- Navigation --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 100;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            background: rgba(5, 5, 7, 0.6);
+            transition: var(--transition-smooth);
+        }
         
-        /* Specific Game Badge Styling */
-        .game-badge { font-family: monospace; color: #fff; background: rgba(255, 255, 255, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; border: 1px solid rgba(255, 255, 255, 0.15); margin-right: 4px; display: inline-block; margin-top: 4px; }
+        .nav-logo { 
+            display: flex; align-items: center; gap: 12px; 
+            font-weight: 700; font-size: 1.4rem; color: #fff; text-decoration: none; 
+            font-family: 'Space Grotesk'; letter-spacing: -0.03em;
+        }
+        .nav-logo img { 
+            width: 32px; height: 32px; border-radius: 8px; 
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
 
-        footer { padding: 50px 8%; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); background: #030305; }
+        /* --- Buttons (High Interaction) --- */
+        .btn {
+            padding: 12px 24px; border-radius: 8px; font-weight: 600;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            cursor: pointer; position: relative; overflow: hidden;
+            font-size: 0.9rem; transition: var(--transition-fast);
+        }
+        
+        .btn-primary {
+            background: #fff; color: #000;
+        }
+        /* Shimmer Effect */
+        .btn-primary::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            transition: 0.5s;
+        }
+        .btn-primary:hover::after { left: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--primary-glow); }
 
+        .btn-secondary {
+            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center;
+            padding: 140px 20px 80px; position: relative;
+        }
+
+        .avatar-container {
+            position: relative; margin-bottom: 40px;
+        }
+        .hero-avatar {
+            width: 140px; height: 140px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+            z-index: 2; position: relative;
+        }
+        .avatar-glow {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 180px; height: 180px; background: var(--primary);
+            filter: blur(60px); opacity: 0.5; z-index: 1;
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; scale: 1; } 50% { opacity: 0.7; scale: 1.1; } }
+
+        h1 {
+            font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 24px;
+            background: linear-gradient(180deg, #fff 20%, #a0a0a0 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem; color: var(--text-muted); max-width: 600px;
+            margin-bottom: 40px; font-weight: 400;
+        }
+
+        /* --- Prefix Indicator --- */
+        .prefix-pill {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 8px 16px; background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border); border-radius: 100px;
+            margin-bottom: 60px; font-family: monospace; font-size: 0.9rem;
+            color: var(--text-muted); backdrop-filter: blur(10px);
+        }
+        .prefix-pill span { color: var(--primary); font-weight: bold; }
+
+        /* --- Grid System --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 8%; }
+        
+        .section-header { margin-bottom: 60px; }
+        .section-header h2 { font-family: 'Space Grotesk'; font-size: 2rem; margin-bottom: 10px; }
+        .section-header p { color: var(--primary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; font-weight: 600; }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px; padding-bottom: 120px;
+        }
+
+        /* --- Enterprise Cards --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 32px;
+            transition: var(--transition-fast);
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(10px); /* Glassmorphism effect */
+            opacity: 0; transform: translateY(30px); /* Initial state for animation */
+        }
+
+        .card.visible { opacity: 1; transform: translateY(0); transition: var(--transition-smooth); }
+
+        /* Hover Reveal Effect */
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(188, 19, 254, 0.5);
+            background: rgba(20, 20, 25, 0.85);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8);
+        }
+        
+        .card-header { 
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+            color: var(--accent-cyan); font-weight: 600;
+        }
+        
+        .code-block {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+        }
+        .code {
+            font-family: monospace; background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border); padding: 4px 8px;
+            border-radius: 6px; font-size: 0.85rem; color: #fff;
+        }
+
+        .description { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+
+        .note {
+            font-size: 0.8rem; padding: 12px; border-radius: 8px;
+            background: rgba(244, 63, 94, 0.1); color: #f43f5e;
+            border-left: 3px solid #f43f5e; font-weight: 500;
+        }
+
+        /* --- Game Badges --- */
+        .game-tag {
+            font-size: 0.75rem; padding: 4px 10px; border-radius: 4px;
+            background: rgba(255,255,255,0.05); color: #ddd;
+            border: 1px solid transparent; transition: 0.2s;
+            display: inline-block; margin: 2px; font-family: monospace;
+        }
+        .game-tag:hover {
+            background: var(--primary); color: #fff; border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 80px 0; background: rgba(2, 2, 2, 0.9); text-align: center;
+        }
+        .footer-logo { font-family: 'Space Grotesk'; font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; display: block; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: 0.2s; font-size: 0.9rem; }
+        .footer-links a:hover { color: #fff; }
+
+        /* --- Mobile Optimization --- */
         @media (max-width: 768px) {
             nav { padding: 15px 5%; }
-            .nav-support { display: none; }
-            .hero-btns { flex-direction: column; width: 100%; max-width: 300px; }
-            .hero-btns .btn { width: 100%; justify-content: center; }
-            .commands-grid { grid-template-columns: 1fr; }
-            .section-padding { padding: 60px 5%; }
-            .scroll-hint { font-size: 0.75rem; }
+            .nav-support { display: none; } /* Hide secondary button on very small screens to save space */
+            .hero { padding-top: 120px; }
+            h1 { font-size: 3rem; }
+            .hero-btns { flex-direction: column; width: 100%; gap: 12px; }
+            .btn { width: 100%; justify-content: center; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-blobs">
-        <div class="blob" style="top: 15%; left: 10%;"></div>
-        <div class="blob" style="bottom: 15%; right: 10%; background: var(--primary-glow);"></div>
+    <div class="bg-container">
+        <div class="bg-image"></div>
     </div>
+    <div class="bg-overlay"></div>
 
     <nav>
         <a href="#" class="nav-logo">
-            <img src="https://images-ext-1.discordapp.net/external/8AMgbIZJr6oOZeCQiGNlW1a48PuZgQMiqS6VEQtL0DU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png?format=webp&quality=lossless&width=290&height=290" alt="Divine">
+            <img src="https://cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" alt="Divine">
             DIVINE
         </a>
-        <div style="display: flex; gap: 10px;">
-            <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-support nav-support">
-                <i class="fab fa-discord"></i> Support Server
+        <div style="display: flex; gap: 12px;">
+            <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-secondary nav-support">
+                <i class="fab fa-discord"></i> Support
             </a>
-            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">Invite</a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
+                Invite Bot
+            </a>
         </div>
     </nav>
 
     <header class="hero">
-        <img src="https://images-ext-1.discordapp.net/external/8AMgbIZJr6oOZeCQiGNlW1a48PuZgQMiqS6VEQtL0DU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png?format=webp&quality=lossless&width=290&height=290" class="hero-avatar" alt="Divine Avatar">
-        <h1>Divine Security</h1>
-        <p style="color: var(--text-muted); max-width: 600px; margin-bottom: 30px;">Premium Antinuke, Automod, and advanced Moderation protocols to safeguard your Discord community.</p>
+        <div class="avatar-container">
+            <div class="avatar-glow"></div>
+            <img src="https://cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" class="hero-avatar" alt="Divine Avatar">
+        </div>
         
-        <div class="hero-btns" style="display: flex; flex-direction: column; align-items: center;">
-            <div style="display: flex; gap: 15px;">
-                <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Add to Discord
-                </a>
-                <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-support">
-                    <i class="fab fa-discord"></i> Support Server
-                </a>
-            </div>
-            
-            <div class="scroll-hint">
-                <span>Scroll down to see commands</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
+        <h1>Security at Scale</h1>
+        <p>The enterprise-grade Antinuke, Automod, and community management solution for modern Discord servers.</p>
+        
+        <div class="hero-btns" style="display: flex; gap: 16px;">
+            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add to Discord
+            </a>
+            <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-secondary">
+                <i class="fab fa-discord"></i> Join Support
+            </a>
         </div>
     </header>
 
-    <section class="section-padding" style="text-align: center;">
-        
-        <div class="prefix-container">
-            <p style="color: var(--text-main); font-size: 1rem;">
-                <i class="fas fa-terminal" style="color: var(--primary-glow); margin-right: 8px;"></i>
-                Default prefix is <b>&</b> or you can check by pinging bot
-            </p>
+    <section class="container">
+        <div style="text-align: center;">
+            <div class="prefix-pill">
+                <i class="fas fa-terminal"></i>
+                Prefix: <span>&</span> or @Divine
+            </div>
         </div>
 
-        <div class="section-title">
+        <div class="section-header">
+            <p>System Modules</p>
             <h2>Command Documentation</h2>
-            <p>Master the power of Divine.</p>
         </div>
 
-        <div class="commands-grid" style="text-align: left;">
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-shield-alt"></i> Antinuke Module</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&antinuke enable</span>
-                    <span class="cmd-name">&antinuke disable</span>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-shield-alt"></i> Antinuke Protocol</div>
+                <div class="code-block">
+                    <span class="code">&antinuke enable</span>
+                    <span class="code">&antinuke disable</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Enable or disable high-level security like <b>antiban, antikick,</b> and <b>antiprune</b>.</p>
+                <p class="description">Enable or disable high-level security like <b>antiban, antikick,</b> and <b>antiprune</b> protection.</p>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-user-check"></i> Whitelist</div>
-                <span class="cmd-name">&wl @user</span>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Grant immunity to trusted members.</p>
-                <div class="cmd-note">IMPORTANT: Must whitelist from ALL events (ban, kick, etc.) for full safety.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-user-check"></i> Whitelist</div>
+                <div class="code-block"><span class="code">&wl @user</span></div>
+                <p class="description">Grant immunity to trusted members against automated security checks.</p>
+                <div class="note">IMPORTANT: Must whitelist from ALL events (ban, kick, etc.) for full safety.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-user-minus"></i> Unwhitelist</div>
-                <span class="cmd-name">&unwl @user</span>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Removes immunity. Process is handled automatically across all security events.</p>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-user-minus"></i> Unwhitelist</div>
+                <div class="code-block"><span class="code">&unwl @user</span></div>
+                <p class="description">Removes immunity. Process is handled automatically across all security events.</p>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-moon"></i> AFK System</div>
-                <span class="cmd-name">&afk [reason]</span>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Set an AFK status. Status is automatically cleared once you send a message.</p>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-moon"></i> AFK Status</div>
+                <div class="code-block"><span class="code">&afk [reason]</span></div>
+                <p class="description">Set an AFK status. Status is automatically cleared once you send a message.</p>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-music"></i> Music Module</div>
-                <span class="cmd-name">&play &lt;query&gt;</span>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Search and play high-quality music directly in your voice channel.</p>
-                <div class="cmd-note">NOTE: You must be in a voice channel (VC) to use this command.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-music"></i> Audio Engine</div>
+                <div class="code-block"><span class="code">&play &lt;query&gt;</span></div>
+                <p class="description">Search and play high-quality music directly in your voice channel.</p>
+                <div class="note">NOTE: You must be in a voice channel (VC) to use this command.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-gamepad"></i> Games Commands</div>
-                <span class="cmd-name">&games</span>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px;">Play interactive games with your community.</p>
-                <div style="display: flex; flex-wrap: wrap;">
-                    <span class="game-badge">blackjack</span>
-                    <span class="game-badge">chess</span>
-                    <span class="game-badge">tic-tac-toe</span>
-                    <span class="game-badge">country-guesser</span>
-                    <span class="game-badge">rps</span>
-                    <span class="game-badge">lights-out</span>
-                    <span class="game-badge">wordle</span>
-                    <span class="game-badge">2048</span>
-                    <span class="game-badge">memory-game</span>
-                    <span class="game-badge">number-slider</span>
-                    <span class="game-badge">battleship</span>
-                    <span class="game-badge">connect-four</span>
-                    <span class="game-badge">slots</span>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-gamepad"></i> Interactive Games</div>
+                <div class="code-block"><span class="code">&games</span></div>
+                <p class="description">Play interactive games with your community.</p>
+                <div style="margin-top: 10px;">
+                    <span class="game-tag">blackjack</span>
+                    <span class="game-tag">chess</span>
+                    <span class="game-tag">tic-tac-toe</span>
+                    <span class="game-tag">country-guesser</span>
+                    <span class="game-tag">rps</span>
+                    <span class="game-tag">lights-out</span>
+                    <span class="game-tag">wordle</span>
+                    <span class="game-tag">2048</span>
+                    <span class="game-tag">memory-game</span>
+                    <span class="game-tag">number-slider</span>
+                    <span class="game-tag">battleship</span>
+                    <span class="game-tag">connect-four</span>
+                    <span class="game-tag">slots</span>
                 </div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-id-card"></i> Utility Module</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&av @user</span>
-                    <span class="cmd-name">&banner @user</span>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-id-card"></i> Utility Suite</div>
+                <div class="code-block">
+                    <span class="code">&av @user</span>
+                    <span class="code">&banner @user</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">View the full-size avatar or profile banner of a member.</p>
-                <div class="cmd-note">USAGE: Mention a user to see theirs, or leave empty to see your own profile info.</div>
+                <p class="description">View the full-size avatar or profile banner of a member.</p>
+                <div class="note">USAGE: Mention a user to see theirs, or leave empty for self.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-circle-info"></i> Info Module</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&si</span>
-                    <span class="cmd-name">&ui @user</span>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-circle-info"></i> Information</div>
+                <div class="code-block">
+                    <span class="code">&si</span>
+                    <span class="code">&ui @user</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Retrieve detailed information about the server or a specific user.</p>
-                <div class="cmd-note">NOTE: If no user is mentioned with &ui, it displays your own account information.</div>
+                <p class="description">Retrieve detailed information about the server or a specific user.</p>
+                <div class="note">NOTE: If no user is mentioned with &ui, it displays your info.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-ticket-alt"></i> Ticket System</div>
-                <span class="cmd-name">&ticket setup</span>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Create a professional support system with interactive buttons for your server.</p>
-                <div class="cmd-note">GUIDANCE: Run the command and follow the step-by-step instructions provided by the bot in your channel.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-ticket-alt"></i> Ticket System</div>
+                <div class="code-block"><span class="code">&ticket setup</span></div>
+                <p class="description">Create a professional support system with interactive buttons for your server.</p>
+                <div class="note">GUIDANCE: Follow the step-by-step instructions provided by the bot.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-chart-line"></i> Leveling System</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&level enable</span>
-                </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Enables the experience and leveling system in the current channel.</p>
-                <div class="cmd-note">NOTE: You must run <b>&level channel</b> and set a destination so level-up messages can be sent correctly.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-chart-line"></i> Leveling</div>
+                <div class="code-block"><span class="code">&level enable</span></div>
+                <p class="description">Enables the experience and leveling system in the current channel.</p>
+                <div class="note">NOTE: Run &level channel to set destination.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-door-open"></i> Welcome System</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&greetsetup</span>
-                </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Sets a custom welcome message for your server to greet new members.</p>
-                <div class="cmd-note">NOTE: You must run <b>&greet channel #channel</b> to specify where the welcome messages should be sent.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-door-open"></i> Welcome System</div>
+                <div class="code-block"><span class="code">&greetsetup</span></div>
+                <p class="description">Sets a custom welcome message for your server to greet new members.</p>
+                <div class="note">NOTE: Run &greet channel #channel to specify destination.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-rocket"></i> Boost System</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&boost setup</span>
-                    <span class="cmd-name">&boost message</span>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-rocket"></i> Boost Tracking</div>
+                <div class="code-block">
+                    <span class="code">&boost setup</span>
+                    <span class="code">&boost message</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Configure custom celebration messages for when members boost your server.</p>
-                <div class="cmd-note">NOTE: You must run <b>&boost channel</b> to specify the destination for boost notifications.</div>
+                <p class="description">Configure custom celebration messages for when members boost your server.</p>
+                <div class="note">NOTE: Run &boost channel for destination setup.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-robot"></i> AI Chatbot</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&ai activate</span>
-                    <span class="cmd-name">&ai deactivate</span>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-robot"></i> AI Chatbot</div>
+                <div class="code-block">
+                    <span class="code">&ai activate</span>
+                    <span class="code">&ai deactivate</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Enables or disables the interactive AI chatbot system in the current channel.</p>
-                <div class="cmd-note">USAGE: Run the command in the specific channel where you want the AI to respond to messages.</div>
+                <p class="description">Enables or disables the interactive AI chatbot system.</p>
+                <div class="note">USAGE: Run in the specific channel you want the AI to use.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-user-shield"></i> Verification System</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&verification setup</span>
-                </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Initialize a secure verification process to protect your server from bots.</p>
-                <div class="cmd-note">GUIDANCE: Run the command and follow the setup wizard to enable member verification.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-user-shield"></i> Verification</div>
+                <div class="code-block"><span class="code">&verification setup</span></div>
+                <p class="description">Initialize a secure verification process to protect your server from bots.</p>
+                <div class="note">GUIDANCE: Follow the setup wizard.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-list-ol"></i> Counting System</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&counting enable</span>
-                </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Enables a competitive counting minigame for your server members.</p>
-                <div class="cmd-note">NOTE: Must use <b>&counting channel</b> to specify the channel where the system should be active.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-list-ol"></i> Counting Game</div>
+                <div class="code-block"><span class="code">&counting enable</span></div>
+                <p class="description">Enables a competitive counting minigame for your server members.</p>
+                <div class="note">NOTE: Use &counting channel to specify the active channel.</div>
             </div>
 
-            <div class="cmd-card">
-                <div class="cmd-header"><i class="fas fa-chart-bar"></i> Tracking System</div>
-                <div style="margin-bottom: 10px;">
-                    <span class="cmd-name">&tracking enable</span>
-                </div>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">Tracks server activity including member invites and message counts.</p>
-                <div class="cmd-note">TIP: Use <b>&tracking leaderboard</b> to see the top contributors in your server.</div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-chart-bar"></i> Invite Tracking</div>
+                <div class="code-block"><span class="code">&tracking enable</span></div>
+                <p class="description">Tracks server activity including member invites and message counts.</p>
+                <div class="note">TIP: Use &tracking leaderboard to see top contributors.</div>
             </div>
 
         </div>
     </section>
 
     <footer>
-        <p>Created by <b>naitik05642</b></p>
-        <div style="margin-top: 15px; display: flex; justify-content: center; gap: 20px;">
-            <a href="https://discord.gg/PkYHSmVtTv" style="color: var(--primary-glow); text-decoration: none; font-size: 0.85rem;">Support Server</a>
-            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" style="color: var(--primary-glow); text-decoration: none; font-size: 0.85rem;">Invite Bot</a>
+        <div class="container">
+            <span class="footer-logo">DIVINE</span>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Created by <b>naitik05642</b></p>
+            
+            <div class="footer-links">
+                <a href="https://discord.gg/PkYHSmVtTv">Support Server</a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot">Invite Bot</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            
+            <p style="font-size: 0.8rem; color: #444;">&copy; 2026 Divine Bot. All rights reserved.</p>
         </div>
-        <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 20px;">&copy; 2026 Divine Bot. Documentation v2.</p>
     </footer>
 
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 50}ms`; // Staggered delay
+            observer.observe(el);
+        });
+    </script>
+
 </body>
-</html>ive
+</html>
