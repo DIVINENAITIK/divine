@@ -1,486 +1,494 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divine | Enterprise Security Infrastructure</title>
+    <title>Divine | The Ultimate Discord Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <meta name="description" content="Divine Bot - Premium Antinuke, Automod, and Utility for Discord. Created by naitik05642.">
-    <meta name="theme-color" content="#bc13fe">
-    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0B0B0F',
+                        card: '#111217',
+                        blurple: '#5865F2',
+                        'blurple-dark': '#4752C4',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.4 },
+                            '50%': { opacity: 0.8 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        :root {
-            --primary: #bc13fe;
-            --primary-dim: rgba(188, 19, 254, 0.1);
-            --primary-glow: rgba(188, 19, 254, 0.4);
-            --bg: #050507;
-            /* Made card background slightly more opaque for better contrast against the image */
-            --card-bg: rgba(10, 10, 12, 0.75); 
-            --border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --accent-cyan: #22d3ee;
-            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-smooth: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        /* Base & Backgrounds */
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+            background-color: #0B0B0F;
+            color: #ffffff;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Background Implementation --- */
-        .bg-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+        .bg-mesh {
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(88, 101, 242, 0.12) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(88, 101, 242, 0.08) 0%, transparent 25%);
+            background-attachment: fixed;
+        }
+
+        .bg-particles {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(17, 18, 23, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(88, 101, 242, 0.4);
+            box-shadow: 0 10px 40px -10px rgba(88, 101, 242, 0.2);
+        }
+
+        /* Typography & Glows */
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-blurple {
+            background: linear-gradient(135deg, #5865F2 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glow-btn {
+            position: relative;
+        }
+        
+        .glow-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #5865F2, #818cf8, #5865F2);
+            z-index: -1;
+            border-radius: inherit;
+            filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glow-btn:hover::before {
+            opacity: 0.8;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Accordion Custom */
+        .accordion-content {
+            max-height: 0;
             overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            opacity: 0;
         }
         
-        .bg-image {
-            width: 100%; height: 100%;
-            background-image: url('https://media.discordapp.net/attachments/1451136748385079529/1471872356338372880/image.png?ex=69908373&is=698f31f3&hm=4482325202110aee74af1bf3e23c5ae06705850d5e89e32b1a118a3e24e6831e&=&format=webp&quality=lossless&width=936&height=523');
-            background-size: cover;
-            background-position: center;
-            /* Subtle zoom animation to keep it alive */
-            animation: slowZoom 30s infinite alternate ease-in-out;
+        .accordion-item.active .accordion-content {
+            max-height: 200px;
+            opacity: 1;
         }
 
-        /* Dark Overlay to ensure text readability */
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: rgba(5, 5, 8, 0.85); /* 85% opacity dark layer */
-            backdrop-filter: blur(5px); /* Slight blur for focus */
+        .accordion-item.active .caret {
+            transform: rotate(180deg);
         }
 
-        @keyframes slowZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        /* --- Scrollbar --- */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
-        /* --- Navigation --- */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 100;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            background: rgba(5, 5, 7, 0.6);
-            transition: var(--transition-smooth);
+        ::-webkit-scrollbar-track {
+            background: #0B0B0F;
         }
-        
-        .nav-logo { 
-            display: flex; align-items: center; gap: 12px; 
-            font-weight: 700; font-size: 1.4rem; color: #fff; text-decoration: none; 
-            font-family: 'Space Grotesk'; letter-spacing: -0.03em;
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
         }
-        .nav-logo img { 
-            width: 32px; height: 32px; border-radius: 8px; 
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        /* --- Buttons (High Interaction) --- */
-        .btn {
-            padding: 12px 24px; border-radius: 8px; font-weight: 600;
-            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-            cursor: pointer; position: relative; overflow: hidden;
-            font-size: 0.9rem; transition: var(--transition-fast);
-        }
-        
-        .btn-primary {
-            background: #fff; color: #000;
-        }
-        /* Shimmer Effect */
-        .btn-primary::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            transition: 0.5s;
-        }
-        .btn-primary:hover::after { left: 100%; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--primary-glow); }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border);
-        }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
-
-        /* --- Hero Section --- */
-        .hero {
-            min-height: 100vh; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; text-align: center;
-            padding: 140px 20px 80px; position: relative;
-        }
-
-        .avatar-container {
-            position: relative; margin-bottom: 40px;
-        }
-        .hero-avatar {
-            width: 140px; height: 140px; border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
-            animation: float 6s ease-in-out infinite;
-            z-index: 2; position: relative;
-        }
-        .avatar-glow {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 180px; height: 180px; background: var(--primary);
-            filter: blur(60px); opacity: 0.5; z-index: 1;
-            animation: pulse 4s infinite;
-        }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; scale: 1; } 50% { opacity: 0.7; scale: 1.1; } }
-
-        h1 {
-            font-family: 'Space Grotesk'; font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 24px;
-            background: linear-gradient(180deg, #fff 20%, #a0a0a0 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .hero p {
-            font-size: 1.2rem; color: var(--text-muted); max-width: 600px;
-            margin-bottom: 40px; font-weight: 400;
-        }
-
-        /* --- Prefix Indicator --- */
-        .prefix-pill {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 8px 16px; background: rgba(0,0,0,0.4);
-            border: 1px solid var(--border); border-radius: 100px;
-            margin-bottom: 60px; font-family: monospace; font-size: 0.9rem;
-            color: var(--text-muted); backdrop-filter: blur(10px);
-        }
-        .prefix-pill span { color: var(--primary); font-weight: bold; }
-
-        /* --- Grid System --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 8%; }
-        
-        .section-header { margin-bottom: 60px; }
-        .section-header h2 { font-family: 'Space Grotesk'; font-size: 2rem; margin-bottom: 10px; }
-        .section-header p { color: var(--primary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; font-weight: 600; }
-
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px; padding-bottom: 120px;
-        }
-
-        /* --- Enterprise Cards --- */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px; padding: 32px;
-            transition: var(--transition-fast);
-            position: relative; overflow: hidden;
-            backdrop-filter: blur(10px); /* Glassmorphism effect */
-            opacity: 0; transform: translateY(30px); /* Initial state for animation */
-        }
-
-        .card.visible { opacity: 1; transform: translateY(0); transition: var(--transition-smooth); }
-
-        /* Hover Reveal Effect */
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(188, 19, 254, 0.5);
-            background: rgba(20, 20, 25, 0.85);
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8);
-        }
-        
-        .card-header { 
-            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-            color: var(--accent-cyan); font-weight: 600;
-        }
-        
-        .code-block {
-            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
-        }
-        .code {
-            font-family: monospace; background: rgba(0,0,0,0.5);
-            border: 1px solid var(--border); padding: 4px 8px;
-            border-radius: 6px; font-size: 0.85rem; color: #fff;
-        }
-
-        .description { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
-
-        .note {
-            font-size: 0.8rem; padding: 12px; border-radius: 8px;
-            background: rgba(244, 63, 94, 0.1); color: #f43f5e;
-            border-left: 3px solid #f43f5e; font-weight: 500;
-        }
-
-        /* --- Game Badges --- */
-        .game-tag {
-            font-size: 0.75rem; padding: 4px 10px; border-radius: 4px;
-            background: rgba(255,255,255,0.05); color: #ddd;
-            border: 1px solid transparent; transition: 0.2s;
-            display: inline-block; margin: 2px; font-family: monospace;
-        }
-        .game-tag:hover {
-            background: var(--primary); color: #fff; border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        /* --- Footer --- */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 80px 0; background: rgba(2, 2, 2, 0.9); text-align: center;
-        }
-        .footer-logo { font-family: 'Space Grotesk'; font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; display: block; }
-        .footer-links { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: 0.2s; font-size: 0.9rem; }
-        .footer-links a:hover { color: #fff; }
-
-        /* --- Mobile Optimization --- */
-        @media (max-width: 768px) {
-            nav { padding: 15px 5%; }
-            .nav-support { display: none; } /* Hide secondary button on very small screens to save space */
-            .hero { padding-top: 120px; }
-            h1 { font-size: 3rem; }
-            .hero-btns { flex-direction: column; width: 100%; gap: 12px; }
-            .btn { width: 100%; justify-content: center; }
-            .grid { grid-template-columns: 1fr; }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5865F2;
         }
     </style>
 </head>
-<body>
+<body class="bg-mesh antialiased selection:bg-blurple selection:text-white">
 
-    <div class="bg-container">
-        <div class="bg-image"></div>
-    </div>
-    <div class="bg-overlay"></div>
+    <nav class="fixed w-full z-50 glass top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="https://images-ext-1.discordapp.net/external/8AMgbIZJr6oOZeCQiGNlW1a48PuZgQMiqS6VEQtL0DU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" alt="Divine Logo" class="w-10 h-10 rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(88,101,242,0.4)]">
+                <span class="text-xl font-bold tracking-tight">Divine</span>
+            </a>
 
-    <nav>
-        <a href="#" class="nav-logo">
-            <img src="https://cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" alt="Divine">
-            DIVINE
-        </a>
-        <div style="display: flex; gap: 12px;">
-            <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-secondary nav-support">
-                <i class="fab fa-discord"></i> Support
-            </a>
-            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
-                Invite Bot
-            </a>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#why-us" class="hover:text-white transition-colors">Commands</a>
+                <a href="#" class="hover:text-white transition-colors">Premium</a>
+                <a href="https://discord.com/invite/PkYHSmVtTv" target="_blank" class="hover:text-white transition-colors">Support</a>
+            </div>
+
+            <div class="hidden md:block">
+                <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" target="_blank" class="glow-btn bg-blurple hover:bg-blurple-dark text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-[0_0_20px_rgba(88,101,242,0.3)]">
+                    Invite to Server
+                </a>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-gray-300">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/5 absolute w-full left-0 top-full p-6 flex flex-col gap-4">
+            <a href="#features" class="text-gray-300 hover:text-white">Features</a>
+            <a href="#why-us" class="text-gray-300 hover:text-white">Commands</a>
+            <a href="https://discord.com/invite/PkYHSmVtTv" target="_blank" class="text-gray-300 hover:text-white">Support</a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" target="_blank" class="bg-blurple text-center text-white px-6 py-3 rounded-lg font-medium mt-2">Invite to Server</a>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="avatar-container">
-            <div class="avatar-glow"></div>
-            <img src="https://cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" class="hero-avatar" alt="Divine Avatar">
+    <section class="relative pt-40 pb-20 lg:pt-56 lg:pb-32 overflow-hidden px-6">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blurple/20 rounded-full blur-[120px] -z-10 animate-pulse-glow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[150px] -z-10 animate-pulse-glow" style="animation-delay: 2s;"></div>
+
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2 text-center lg:text-left reveal">
+                <div class="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-sm font-medium text-blurple mb-6 flex items-center gap-2 w-max mx-auto lg:mx-0">
+                    <span class="w-2 h-2 rounded-full bg-blurple animate-pulse"></span>
+                    v2.0 is now live
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight mb-6">
+                    The Only Discord Bot <br/>
+                    <span class="text-gradient">You'll Ever Need.</span>
+                </h1>
+                <p class="text-gray-400 text-lg lg:text-xl mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    Elevate your server with advanced moderation, flawless music, impenetrable anti-nuke protection, and powerful interactive systems.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                    <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" target="_blank" class="glow-btn bg-blurple text-white px-8 py-4 rounded-xl font-semibold text-lg w-full sm:w-auto flex items-center justify-center gap-2 transition-transform hover:scale-105">
+                        <i class="ph-fill ph-discord-logo text-2xl"></i> Add to Discord
+                    </a>
+                    <a href="https://discord.com/invite/PkYHSmVtTv" target="_blank" class="bg-card border border-white/10 hover:border-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg w-full sm:w-auto flex items-center justify-center gap-2 transition-all hover:bg-white/5">
+                        Support Server
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 relative reveal delay-200">
+                <div class="relative w-72 h-72 lg:w-[450px] lg:h-[450px] mx-auto animate-float">
+                    <div class="absolute inset-0 rounded-full border border-white/10 border-t-blurple animate-[spin_10s_linear_infinite]"></div>
+                    <div class="absolute inset-4 rounded-full border border-white/5 border-b-blurple animate-[spin_15s_linear_infinite_reverse]"></div>
+                    
+                    <img src="https://images-ext-1.discordapp.net/external/8AMgbIZJr6oOZeCQiGNlW1a48PuZgQMiqS6VEQtL0DU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" alt="Divine Bot" class="absolute inset-8 rounded-full object-cover shadow-[0_0_80px_rgba(88,101,242,0.5)] border-4 border-card z-10">
+                    
+                    <div class="absolute top-10 -right-10 bg-card/80 backdrop-blur border border-white/10 px-4 py-2 rounded-xl flex items-center gap-2 animate-float-delayed z-20">
+                        <i class="ph-fill ph-shield-check text-green-400 text-xl"></i>
+                        <span class="text-sm font-semibold">Protected</span>
+                    </div>
+                    <div class="absolute bottom-20 -left-12 bg-card/80 backdrop-blur border border-white/10 px-4 py-2 rounded-xl flex items-center gap-2 animate-float z-20">
+                        <i class="ph-fill ph-music-notes text-blurple text-xl"></i>
+                        <span class="text-sm font-semibold">Playing Audio</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <h1>Security at Scale</h1>
-        <p>The enterprise-grade Antinuke, Automod, and community management solution for modern Discord servers.</p>
-        
-        <div class="hero-btns" style="display: flex; gap: 16px;">
-            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add to Discord
-            </a>
-            <a href="https://discord.gg/PkYHSmVtTv" class="btn btn-secondary">
-                <i class="fab fa-discord"></i> Join Support
-            </a>
+    </section>
+
+    <div class="w-full border-y border-white/5 bg-black/20 backdrop-blur-sm py-4 overflow-hidden flex whitespace-nowrap reveal">
+        <div class="animate-marquee flex gap-16 items-center px-8">
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-lightning text-yellow-400 text-lg"></i> 0% Downtime</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-rocket text-blue-400 text-lg"></i> Ultra Fast Latency</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-check-circle text-green-400 text-lg"></i> 99.99% Uptime</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-users text-purple-400 text-lg"></i> Trusted by Communities</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-lightning text-yellow-400 text-lg"></i> 0% Downtime</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-rocket text-blue-400 text-lg"></i> Ultra Fast Latency</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-check-circle text-green-400 text-lg"></i> 99.99% Uptime</span>
+            <span class="text-white/20">•</span>
+            <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-users text-purple-400 text-lg"></i> Trusted by Communities</span>
         </div>
-    </header>
+        <div class="animate-marquee flex gap-16 items-center px-8 absolute top-4 left-[100%]">
+             <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-lightning text-yellow-400 text-lg"></i> 0% Downtime</span>
+             <span class="text-white/20">•</span>
+             <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-rocket text-blue-400 text-lg"></i> Ultra Fast Latency</span>
+             <span class="text-white/20">•</span>
+             <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-check-circle text-green-400 text-lg"></i> 99.99% Uptime</span>
+             <span class="text-white/20">•</span>
+             <span class="flex items-center gap-2 text-gray-400 font-medium tracking-wider uppercase text-sm"><i class="ph-fill ph-users text-purple-400 text-lg"></i> Trusted by Communities</span>
+        </div>
+    </div>
 
-    <section class="container">
-        <div style="text-align: center;">
-            <div class="prefix-pill">
-                <i class="fas fa-terminal"></i>
-                Prefix: <span>&</span> or @Divine
-            </div>
+    <section id="features" class="py-24 px-6 relative max-w-7xl mx-auto">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-4">Powerful <span class="text-gradient-blurple">Features</span></h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Everything you need to run, protect, and grow your Discord server, built into a single performant bot.</p>
         </div>
 
-        <div class="section-header">
-            <p>System Modules</p>
-            <h2>Command Documentation</h2>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <div class="card-header"><i class="fas fa-shield-alt"></i> Antinuke Protocol</div>
-                <div class="code-block">
-                    <span class="code">&antinuke enable</span>
-                    <span class="code">&antinuke disable</span>
-                </div>
-                <p class="description">Enable or disable high-level security like <b>antiban, antikick,</b> and <b>antiprune</b> protection.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-user-check"></i> Whitelist</div>
-                <div class="code-block"><span class="code">&wl @user</span></div>
-                <p class="description">Grant immunity to trusted members against automated security checks.</p>
-                <div class="note">IMPORTANT: Must whitelist from ALL events (ban, kick, etc.) for full safety.</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-user-minus"></i> Unwhitelist</div>
-                <div class="code-block"><span class="code">&unwl @user</span></div>
-                <p class="description">Removes immunity. Process is handled automatically across all security events.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-moon"></i> AFK Status</div>
-                <div class="code-block"><span class="code">&afk [reason]</span></div>
-                <p class="description">Set an AFK status. Status is automatically cleared once you send a message.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-music"></i> Audio Engine</div>
-                <div class="code-block"><span class="code">&play &lt;query&gt;</span></div>
-                <p class="description">Search and play high-quality music directly in your voice channel.</p>
-                <div class="note">NOTE: You must be in a voice channel (VC) to use this command.</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-gamepad"></i> Interactive Games</div>
-                <div class="code-block"><span class="code">&games</span></div>
-                <p class="description">Play interactive games with your community.</p>
-                <div style="margin-top: 10px;">
-                    <span class="game-tag">blackjack</span>
-                    <span class="game-tag">chess</span>
-                    <span class="game-tag">tic-tac-toe</span>
-                    <span class="game-tag">country-guesser</span>
-                    <span class="game-tag">rps</span>
-                    <span class="game-tag">lights-out</span>
-                    <span class="game-tag">wordle</span>
-                    <span class="game-tag">2048</span>
-                    <span class="game-tag">memory-game</span>
-                    <span class="game-tag">number-slider</span>
-                    <span class="game-tag">battleship</span>
-                    <span class="game-tag">connect-four</span>
-                    <span class="game-tag">slots</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[220px]">
+            
+            <div class="glass-card rounded-3xl p-8 col-span-1 md:col-span-2 lg:col-span-2 row-span-2 flex flex-col justify-between reveal group overflow-hidden relative">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-red-500/10 blur-3xl rounded-full group-hover:bg-red-500/20 transition-all"></div>
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-6">
+                        <i class="ph-fill ph-shield-warning text-3xl text-red-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Ultimate Security & Anti-Nuke</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Bulletproof your server. Divine instantly restores deleted channels, reverts bans, recovers roles, and automatically quarantines malicious actors before damage is done.
+                    </p>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header"><i class="fas fa-id-card"></i> Utility Suite</div>
-                <div class="code-block">
-                    <span class="code">&av @user</span>
-                    <span class="code">&banner @user</span>
+            <div class="glass-card rounded-3xl p-8 col-span-1 md:col-span-1 lg:col-span-2 row-span-1 flex flex-col justify-center reveal delay-100 group">
+                <div class="flex items-start gap-6">
+                    <div class="w-14 h-14 rounded-2xl bg-blurple/10 border border-blurple/20 flex items-center justify-center shrink-0">
+                        <i class="ph-fill ph-headphones text-3xl text-blurple"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Music System</h3>
+                        <p class="text-gray-400 text-sm">Lavalink audio, Spotify support, persistent playlists, and interactive button controls for DJing.</p>
+                    </div>
                 </div>
-                <p class="description">View the full-size avatar or profile banner of a member.</p>
-                <div class="note">USAGE: Mention a user to see theirs, or leave empty for self.</div>
             </div>
 
-            <div class="card">
-                <div class="card-header"><i class="fas fa-circle-info"></i> Information</div>
-                <div class="code-block">
-                    <span class="code">&si</span>
-                    <span class="code">&ui @user</span>
+            <div class="glass-card rounded-3xl p-8 col-span-1 md:col-span-2 lg:col-span-1 row-span-1 flex flex-col justify-center reveal delay-200">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4">
+                    <i class="ph-fill ph-ticket text-2xl text-blue-400"></i>
                 </div>
-                <p class="description">Retrieve detailed information about the server or a specific user.</p>
-                <div class="note">NOTE: If no user is mentioned with &ui, it displays your info.</div>
+                <h3 class="text-xl font-bold mb-2">Ticket System</h3>
+                <p class="text-gray-400 text-sm">Dropdown panels & automated private support threads.</p>
             </div>
 
-            <div class="card">
-                <div class="card-header"><i class="fas fa-ticket-alt"></i> Ticket System</div>
-                <div class="code-block"><span class="code">&ticket setup</span></div>
-                <p class="description">Create a professional support system with interactive buttons for your server.</p>
-                <div class="note">GUIDANCE: Follow the step-by-step instructions provided by the bot.</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-chart-line"></i> Leveling</div>
-                <div class="code-block"><span class="code">&level enable</span></div>
-                <p class="description">Enables the experience and leveling system in the current channel.</p>
-                <div class="note">NOTE: Run &level channel to set destination.</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-door-open"></i> Welcome System</div>
-                <div class="code-block"><span class="code">&greetsetup</span></div>
-                <p class="description">Sets a custom welcome message for your server to greet new members.</p>
-                <div class="note">NOTE: Run &greet channel #channel to specify destination.</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-rocket"></i> Boost Tracking</div>
-                <div class="code-block">
-                    <span class="code">&boost setup</span>
-                    <span class="code">&boost message</span>
+            <div class="glass-card rounded-3xl p-8 col-span-1 lg:col-span-1 row-span-1 flex flex-col justify-center reveal delay-300">
+                 <div class="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
+                    <i class="ph-fill ph-gear text-2xl text-orange-400"></i>
                 </div>
-                <p class="description">Configure custom celebration messages for when members boost your server.</p>
-                <div class="note">NOTE: Run &boost channel for destination setup.</div>
+                <h3 class="text-xl font-bold mb-2">Automation</h3>
+                <p class="text-gray-400 text-sm">Auto-responses, sticky messages, and smart moderation tools.</p>
             </div>
 
-            <div class="card">
-                <div class="card-header"><i class="fas fa-robot"></i> AI Chatbot</div>
-                <div class="code-block">
-                    <span class="code">&ai activate</span>
-                    <span class="code">&ai deactivate</span>
+            <div class="glass-card rounded-3xl p-8 col-span-1 md:col-span-2 lg:col-span-2 row-span-1 flex flex-col justify-center reveal group">
+                 <div class="flex items-center gap-6">
+                    <div class="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center shrink-0">
+                        <i class="ph-fill ph-microphone-stage text-3xl text-green-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Join-To-Create Voice</h3>
+                        <p class="text-gray-400 text-sm">Users join a master channel to instantly spawn their own private, manageable voice rooms.</p>
+                    </div>
                 </div>
-                <p class="description">Enables or disables the interactive AI chatbot system.</p>
-                <div class="note">USAGE: Run in the specific channel you want the AI to use.</div>
             </div>
 
-            <div class="card">
-                <div class="card-header"><i class="fas fa-user-shield"></i> Verification</div>
-                <div class="code-block"><span class="code">&verification setup</span></div>
-                <p class="description">Initialize a secure verification process to protect your server from bots.</p>
-                <div class="note">GUIDANCE: Follow the setup wizard.</div>
+            <div class="glass-card rounded-3xl p-8 col-span-1 row-span-1 flex flex-col justify-center reveal delay-100">
+                <div class="w-12 h-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4">
+                    <i class="ph-fill ph-gift text-2xl text-pink-400"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Giveaways</h3>
+                <p class="text-gray-400 text-sm">Timed drops with rerolls and custom requirements.</p>
             </div>
 
-            <div class="card">
-                <div class="card-header"><i class="fas fa-list-ol"></i> Counting Game</div>
-                <div class="code-block"><span class="code">&counting enable</span></div>
-                <p class="description">Enables a competitive counting minigame for your server members.</p>
-                <div class="note">NOTE: Use &counting channel to specify the active channel.</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><i class="fas fa-chart-bar"></i> Invite Tracking</div>
-                <div class="code-block"><span class="code">&tracking enable</span></div>
-                <p class="description">Tracks server activity including member invites and message counts.</p>
-                <div class="note">TIP: Use &tracking leaderboard to see top contributors.</div>
+            <div class="glass-card rounded-3xl p-8 col-span-1 row-span-1 flex flex-col justify-center reveal delay-200">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mb-4">
+                    <i class="ph-fill ph-confetti text-2xl text-yellow-400"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Community Fun</h3>
+                <p class="text-gray-400 text-sm">Birthdays, economy slots, and interactive games.</p>
             </div>
 
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <span class="footer-logo">DIVINE</span>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Created by <b>naitik05642</b></p>
+    <section id="why-us" class="py-24 px-6 max-w-4xl mx-auto border-t border-white/5 reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4">Why Choose Divine?</h2>
+            <p class="text-gray-400">Built on modern infrastructure for uncompromised performance.</p>
+        </div>
+
+        <div class="space-y-4">
+            <div class="accordion-item glass border border-white/5 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="px-6 py-5 flex justify-between items-center bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                    <h3 class="text-lg font-semibold flex items-center gap-3"><i class="ph-fill ph-database text-blurple"></i> Stateless Performance</h3>
+                    <i class="ph ph-caret-down text-gray-400 caret transition-transform duration-300"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="px-6 pb-5 pt-2 text-gray-400 border-t border-white/5">
+                        Divine is engineered for massive scale. By leveraging Redis caching and MongoDB for persistent storage, command execution and event handling happen in milliseconds, ensuring zero lag even in servers with 100k+ members.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass border border-white/5 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="px-6 py-5 flex justify-between items-center bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                    <h3 class="text-lg font-semibold flex items-center gap-3"><i class="ph-fill ph-layout text-blurple"></i> Modern Discord UI</h3>
+                    <i class="ph ph-caret-down text-gray-400 caret transition-transform duration-300"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="px-6 pb-5 pt-2 text-gray-400 border-t border-white/5">
+                        Say goodbye to typing long, confusing commands. Divine utilizes the latest Discord features including Slash Commands, interactive Buttons, Dropdown Menus, and Modals for a seamless, app-like user experience.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass border border-white/5 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="px-6 py-5 flex justify-between items-center bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                    <h3 class="text-lg font-semibold flex items-center gap-3"><i class="ph-fill ph-faders text-blurple"></i> Fully Customizable</h3>
+                    <i class="ph ph-caret-down text-gray-400 caret transition-transform duration-300"></i>
+                </div>
+                <div class="accordion-content">
+                    <div class="px-6 pb-5 pt-2 text-gray-400 border-t border-white/5">
+                        Tailor the bot to fit your exact needs. Easily configure autoroles, custom prefixes, welcome modules, and deeply granular logging systems directly from Discord.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 relative overflow-hidden reveal">
+        <div class="absolute inset-0 bg-particles opacity-30 mask-image:linear-gradient(to_bottom,transparent,black,transparent)"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0B0B0F] via-transparent to-[#0B0B0F]"></div>
+
+        <div class="relative max-w-3xl mx-auto text-center glass-card rounded-[3rem] p-12 lg:p-20 border border-blurple/30 shadow-[0_0_100px_rgba(88,101,242,0.15)]">
+            <h2 class="text-4xl lg:text-5xl font-extrabold mb-6 text-white">Ready to divine your server?</h2>
+            <p class="text-xl text-gray-400 mb-10">Join thousands of servers who have already upgraded their community experience.</p>
             
-            <div class="footer-links">
-                <a href="https://discord.gg/PkYHSmVtTv">Support Server</a>
-                <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot">Invite Bot</a>
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1397771394762408086&permissions=8&integration_type=0&scope=bot" target="_blank" class="glow-btn inline-block bg-white text-dark hover:bg-gray-200 px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+                Invite Divine Now
+            </a>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 bg-[#07070a] pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <img src="https://images-ext-1.discordapp.net/external/8AMgbIZJr6oOZeCQiGNlW1a48PuZgQMiqS6VEQtL0DU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/1397771394762408086/41139567e4a1324572ca817a947d9d0e.png" alt="Divine Logo" class="w-8 h-8 rounded-lg grayscale opacity-50">
+                <span class="text-gray-500 font-medium">© 2026 Divine Bot. All rights reserved.</span>
             </div>
             
-            <p style="font-size: 0.8rem; color: #444;">&copy; 2026 Divine Bot. All rights reserved.</p>
+            <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+                <a href="https://discord.com/invite/PkYHSmVtTv" target="_blank" class="hover:text-white transition-colors">Support Server</a>
+                <a href="https://top.gg/bot/1397771394762408086" target="_blank" class="hover:text-white transition-colors">Top.gg Vote</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            </div>
         </div>
     </footer>
 
     <script>
-        const observer = new IntersectionObserver((entries) => {
+        // Scroll Reveal Animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Run once
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
 
-        document.querySelectorAll('.card').forEach((el, index) => {
-            el.style.transitionDelay = `${index * 50}ms`; // Staggered delay
+        document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
         });
-    </script>
 
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Accordion Logic
+        const accordions = document.querySelectorAll('.accordion-item');
+        
+        accordions.forEach(acc => {
+            acc.addEventListener('click', () => {
+                // Close others
+                accordions.forEach(other => {
+                    if (other !== acc) {
+                        other.classList.remove('active');
+                    }
+                });
+                // Toggle clicked
+                acc.classList.toggle('active');
+            });
+        });
+
+        // Sticky Navbar Backdrop Blur Effect on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-[#0B0B0F]/80', 'border-b', 'border-white/5');
+            } else {
+                nav.classList.remove('bg-[#0B0B0F]/80', 'border-b', 'border-white/5');
+            }
+        });
+    </script>
 </body>
 </html>
